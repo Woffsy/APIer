@@ -1,8 +1,12 @@
+var canClick = true;
+
+
 const inputElm = document.getElementById("number");
 const buttonElm = document.getElementById("btn");
 const button2Elm = document.getElementById("btn2");
 const button3Elm = document.getElementById("btn3");
 const button4Elm = document.getElementById("btn4");
+const button5Elm = document.getElementById("btn5");
 const outputElm = document.getElementById("output");
 
 const headers = new Headers({
@@ -17,10 +21,57 @@ var requestOptions = {
   redirect: "follow",
 };
 
-buttonElm.addEventListener("click", numberFact);
-button2Elm.addEventListener("click", jokeDad);
-button3Elm.addEventListener("click", catPic);
-button4Elm.addEventListener("click", pokemon);
+buttonElm.addEventListener("click", () => {
+    if (canClick === true) {
+        numberFact();
+        canClick = false;
+        setTimeout(() => {
+            canClick = true;
+        }, 2000);
+    }
+})
+
+button2Elm.addEventListener("click", () => {
+    if (canClick === true) {
+        jokeDad();
+        canClick = false;
+        setTimeout(() => {
+            canClick = true;
+        }, 2000);
+    }
+})
+
+button3Elm.addEventListener("click", () => {
+    if (canClick === true) {
+        catPic();
+        canClick = false;
+        setTimeout(() => {
+            canClick = true;
+        }, 4000);
+    }
+})
+
+button4Elm.addEventListener("click", () => {
+    if (canClick === true) {
+        pokemon();
+        canClick = false;
+        setTimeout(() => {
+            canClick = true;
+        }, 2000);
+    }
+})
+
+button5Elm.addEventListener("click", () => {
+    if (canClick === true) {
+        getJoke();
+        canClick = false;
+        setTimeout(() => {
+            canClick = true;
+        }, 5000);
+    }
+})
+
+
 function numberFact() {
   let tall = inputElm.value;
   outputElm.innerHTML = "Vennligst vent...";
@@ -71,4 +122,23 @@ function pokemon() {
       .then((data) => (outputElm.innerHTML = `Pokemon name: ${data.name}`))
       .catch((error) => (outputElm.innerHTML = "Noe gikk galt"));
   }
+}
+
+function getJoke() {
+    outputElm.innerHTML = "Vennligst vent...";
+    fetch("https://v2.jokeapi.dev/joke/Any")
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.type === "single") {
+                outputElm.innerHTML = data.joke;
+                console.log("single")
+            } else {
+                outputElm.innerHTML = data.setup
+                setTimeout(() => {
+                    outputElm.innerHTML += "<br> " + data.delivery;
+                }, 5000);
+                console.log("twopart")
+            }
+        })
+        .catch((error) => (outputElm.innerHTML = "Noe gikk galt"));
 }
